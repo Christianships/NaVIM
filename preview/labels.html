@@ -1,0 +1,45 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>NaVIM label preview</title>
+<style>
+  body { margin: 0; font: 15px/1.5 -apple-system, system-ui, sans-serif; display: grid; grid-template-columns: 1fr 1fr; height: 100vh; }
+  section { padding: 28px 32px; }
+  .light { background: #fff; color: #111; }
+  .dark { background: #111; color: #ddd; }
+  a { color: #2563eb; }
+  .dark a { color: #8ab4ff; }
+  button { font: inherit; padding: 6px 12px; margin: 4px 6px 4px 0; }
+  input { font: inherit; padding: 6px; width: 70%; }
+  p { margin: 14px 0; }
+</style>
+<section class="light">
+  <h3>Light page</h3>
+  <p><a href="#a">Home</a> · <a href="#b">Explore</a> · <a href="#c">Notifications</a> · <a href="#d">Settings</a></p>
+  <p><input placeholder="Search…"></p>
+  <p><button>Follow</button><button>Share</button><button>Save</button></p>
+  <p>Read the <a href="#e">full article</a> or jump to <a href="#f">comments</a>.</p>
+  <p><a href="#g">Next page →</a></p>
+</section>
+<section class="dark">
+  <h3>Dark page</h3>
+  <p><a href="#a">Inbox</a> · <a href="#b">Starred</a> · <a href="#c">Drafts</a> · <a href="#d">Sent</a></p>
+  <p><input placeholder="Filter…"></p>
+  <p><button>Reply</button><button>Archive</button><button>Delete</button></p>
+  <p>Open <a href="#e">the thread</a> or <a href="#f">the attachment</a>.</p>
+  <p><a href="#g">Older →</a></p>
+</section>
+<script src="../src/dotmatrix.js"></script>
+<script src="../src/overlay.js"></script>
+<script src="../src/hints.js"></script>
+<script>
+  NaVIM.openTab = () => {};
+  // headless screenshots resize the window once, which exits hint mode: re-run
+  const show = () => {
+    NaVIM.hints.start();
+    // ?typed=s shows the mid-typing state: typed letters dim, the rest hide
+    for (const ch of new URLSearchParams(location.search).get('typed') ?? '')
+      NaVIM.hints.key({ code: 'Key' + ch.toUpperCase(), shiftKey: false, metaKey: false, ctrlKey: false });
+  };
+  show();
+  addEventListener('resize', () => setTimeout(show));
+</script>

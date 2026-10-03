@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "NaVIM",
+  "version": "0.1.0",
+  "description": "Vim-style browsing on the right Option key: tap for dot-matrix link hints, hold for motions.",
+  "background": {
+    "service_worker": "src/background.js",
+    "scripts": ["src/background.js"],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/dotmatrix.js", "src/overlay.js", "src/hints.js", "src/commands.js", "src/keys.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ]
+}
