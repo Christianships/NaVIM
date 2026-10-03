@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <path id="v" d="M128,164 232,404 284,404 400,164 356,164 272.7,336.5 198,164Z M98,116 234,116 226,164 106,164Z M326,116 430,116 422,164 334,164Z"/>
+    <clipPath id="faceClip"><polygon points="256,62 450,256 256,450 62,256"/></clipPath>
+    <clipPath id="vClip"><use href="#v"/></clipPath>
+
+    <radialGradient id="face" cx="200" cy="170" r="300" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#202024"/>
+      <stop offset="1" stop-color="#030304"/>
+    </radialGradient>
+    <pattern id="grid" width="13" height="13" patternUnits="userSpaceOnUse">
+      <circle cx="6.5" cy="6.5" r="1.9" fill="#fff"/>
+    </pattern>
+    <radialGradient id="gridFade" cx="256" cy="230" r="230" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#fff" stop-opacity=".03"/>
+    </radialGradient>
+    <mask id="gridMask"><rect width="512" height="512" fill="url(#gridFade)"/></mask>
+
+    <linearGradient id="chrome" x1="0" y1="116" x2="0" y2="404" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset=".40" stop-color="#e4e4e8"/>
+      <stop offset=".49" stop-color="#8d8d94"/>
+      <stop offset=".55" stop-color="#c4c4ca"/>
+      <stop offset="1" stop-color="#f6f6f8"/>
+    </linearGradient>
+    <linearGradient id="gloss" x1="0" y1="116" x2="0" y2="250" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="60" y1="60" x2="300" y2="300" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" stop-opacity=".14"/>
+      <stop offset=".5" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="tagFace" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1a1a1d"/>
+      <stop offset="1" stop-color="#000"/>
+    </linearGradient>
+
+    <filter id="drop" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#000" flood-opacity=".55"/>
+    </filter>
+    <filter id="tagShadow" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#000" flood-opacity=".7"/>
+    </filter>
+  </defs>
+
+  <!-- diamond: rounded rim, bevel facets, dot-matrix face -->
+  <g filter="url(#drop)">
+    <polygon points="256,22 490,256 256,490 22,256" fill="#000" stroke="#000" stroke-width="22" stroke-linejoin="round"/>
+    <polygon points="256,22 22,256 62,256 256,62" fill="#6a6a70"/><polygon points="256,22 490,256 450,256 256,62" fill="#3c3c42"/><polygon points="490,256 256,490 256,450 450,256" fill="#101012"/><polygon points="256,490 22,256 62,256 256,450" fill="#232327"/>
+    <polygon points="256,22 490,256 256,490 22,256" fill="none" stroke="#fff" stroke-opacity=".22" stroke-width="2" stroke-linejoin="round"/>
+    <polygon points="256,62 450,256 256,450 62,256" fill="url(#face)"/>
+    <g clip-path="url(#faceClip)">
+      <rect width="512" height="512" fill="url(#grid)" mask="url(#gridMask)"/>
+      <rect width="512" height="512" fill="url(#sheen)"/>
+    </g>
+    <polyline points="62,256 256,62 450,256" fill="none" stroke="#000" stroke-opacity=".8" stroke-width="3"/>
+    <polyline points="450,256 256,450 62,256" fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="2"/>
+  </g>
+
+  <!-- the V: extruded depth, then the chrome face -->
+  <g fill="#34343a" stroke="#0b0b0d" stroke-width="5" stroke-linejoin="round"><use href="#v" transform="translate(13.2 18.0)"/><use href="#v" transform="translate(12.1 16.5)"/><use href="#v" transform="translate(11.0 15.0)"/><use href="#v" transform="translate(9.9 13.5)"/><use href="#v" transform="translate(8.8 12.0)"/><use href="#v" transform="translate(7.7 10.5)"/><use href="#v" transform="translate(6.6 9.0)"/><use href="#v" transform="translate(5.5 7.5)"/><use href="#v" transform="translate(4.4 6.0)"/><use href="#v" transform="translate(3.3 4.5)"/><use href="#v" transform="translate(2.2 3.0)"/><use href="#v" transform="translate(1.1 1.5)"/></g>
+  <use href="#v" fill="url(#chrome)" stroke="#000" stroke-width="7" stroke-linejoin="round" paint-order="stroke"/>
+  <g clip-path="url(#vClip)">
+    <rect x="0" y="116" width="512" height="134" fill="url(#gloss)" opacity=".55"/>
+    <path d="M98 119H430" stroke="#fff" stroke-width="4"/>
+  </g>
+
+  <!-- hint tags: NA . V . IM -->
+  
+    <g filter="url(#tagShadow)">
+      <rect x="90" y="334" width="104" height="64" rx="11" fill="#000"/>
+      <rect x="91.5" y="335.5" width="101" height="61" rx="9.5" fill="url(#tagFace)" stroke="#fff" stroke-opacity=".28" stroke-width="1.5"/>
+      <path d="M104.30 345.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M132.30 345.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M104.30 352.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M132.30 352.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M104.30 359.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M111.30 359.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M132.30 359.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M104.30 366.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M118.30 366.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M132.30 366.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M104.30 373.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M125.30 373.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M132.30 373.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M104.30 380.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M132.30 380.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M104.30 387.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M132.30 387.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M153.30 345.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M160.30 345.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M167.30 345.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M146.30 352.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M174.30 352.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M146.30 359.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M174.30 359.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M146.30 366.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M153.30 366.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M160.30 366.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M167.30 366.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M174.30 366.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M146.30 373.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M174.30 373.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M146.30 380.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M174.30 380.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M146.30 387.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M174.30 387.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0" fill="#fff"/>
+    </g>
+  
+    <g filter="url(#tagShadow)">
+      <rect x="324" y="334" width="104" height="64" rx="11" fill="#000"/>
+      <rect x="325.5" y="335.5" width="101" height="61" rx="9.5" fill="url(#tagFace)" stroke="#fff" stroke-opacity=".28" stroke-width="1.5"/>
+      <path d="M345.30 345.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M352.30 345.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M359.30 345.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M352.30 352.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M352.30 359.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M352.30 366.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M352.30 373.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M352.30 380.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M345.30 387.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M352.30 387.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M359.30 387.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M380.30 345.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M408.30 345.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M380.30 352.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M387.30 352.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M401.30 352.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M408.30 352.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M380.30 359.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M394.30 359.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M408.30 359.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M380.30 366.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M394.30 366.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M408.30 366.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M380.30 373.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M408.30 373.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M380.30 380.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M408.30 380.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M380.30 387.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0M408.30 387.00a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0" fill="#fff"/>
+    </g>
+</svg>
