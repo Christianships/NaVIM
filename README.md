@@ -1,49 +1,182 @@
-# NaVIM
+<p align="center">
+  <img src="icons/navim.svg" width="160" alt="NaVIM logo: a chrome V on a black beveled diamond">
+</p>
 
-Vim-style browsing driven entirely by the **right Option key**, built for
-the Search browser (WebKit) but plain WebExtension JS, so it loads unpacked
-anywhere.
+<h1 align="center">NaVIM</h1>
 
-Plain typing never triggers anything, so there's no insert mode to manage.
+<p align="center">
+  Vim-style browsing on <b>one key</b>: your <b>right Option</b>.<br>
+  Tap it to label every link on the page. Hold it to scroll, go back, switch tabs.
+</p>
+
+---
+
+NaVIM is a Vimium-style WebExtension built for **Search**, a WebKit browser for
+macOS. It's plain JavaScript with no build step, so it also loads unpacked in
+Chrome, Helium, Arc and other Chromium browsers.
+
+Most vim-for-the-web extensions are **modal**: single letters are commands
+until you click into a text box, and you're always one stray keypress away
+from closing a tab. NaVIM uses no modes. Every command runs through the
+**right Option key**, so:
+
+- typing is never intercepted, on any site, in any field
+- left Option still types `å ∂ ∆` as usual
+- you never have to think about insert mode
+
+## Demo
+
+<!-- A screen recording of NaVIM in Search goes here: docs/demo.gif -->
+
+**Lock-on hints.** Tap right ⌥ and every clickable thing in view gets a
+label:
+
+![Hint labels on a light page and a dark page](docs/hints.png)
+
+Start typing a label, and the letters you've typed dim while labels that no
+longer match disappear. Finish the label and NaVIM clicks it:
+
+![Mid-typing: after pressing S only the S-labels remain, with the S dimmed](docs/hints-typing.png)
+
+*These images are rendered from [`preview/labels.html`](preview/labels.html),
+which runs the extension's real hint code on a sample page.*
 
 ## Keys
 
-| Right ⌥ | Does |
-|---|---|
-| **tap** (press + release alone) | Lock-on hints: every clickable thing gets a dot-matrix label; type it to click. Esc or another tap cancels. Shift on the last letter opens a link in a new tab. |
-| hold + `j` / `k` | scroll down / up |
-| hold + `d` / `u` | half page down / up |
-| hold + `g` / `G` | top / bottom |
-| hold + `h` / `l` | back / forward |
-| hold + `r` | reload |
-| hold + `i` | focus the first text box |
-| hold + `f` / `F` | hints / hints that open in a new tab |
-| hold + `y` | copy the page URL |
+### Tap right ⌥: lock-on hints
 
-Left Option is untouched.
+| Key | Does |
+|---|---|
+| tap **right ⌥** | show labels on every visible link, button and field |
+| type a label (e.g. `sd`) | click it, or focus it if it's a text field |
+| **Shift** + the label's last letter | open the link in a new background tab |
+| `Backspace` | undo the last typed letter |
+| `Esc`, or tap right ⌥ again | cancel |
+
+A tap means pressing and releasing right ⌥ within 350 ms with no other key.
+Scrolling, resizing or pressing a ⌘ shortcut also closes the labels.
+
+### Hold right ⌥ + key: commands
+
+| Key | Does |
+|---|---|
+| `j` / `k` | scroll down / up (hold to keep going) |
+| `d` / `u` | half a page down / up |
+| `g` / `G` | jump to the top / bottom |
+| `h` / `l` | back / forward |
+| `r` | reload |
+| `i` | jump into the first text box on the page |
+| `f` / `F` | show hints / hints that open in new tabs |
+| `y` | copy the page URL (a `COPIED` badge confirms) |
+
+The keys follow vim: `hjkl` move, `gg`/`G` go to the ends, `d`/`u` move half
+a page, `y` yanks (copies).
 
 ## Install
 
-1. Search → Extensions → **Load Unpacked**
-2. Pick this folder (the one with `manifest.json`)
-3. Grant it access to websites when asked
+### Search
 
-After editing code, reload the extension and refresh the page.
+1. Clone the repo: `git clone https://github.com/Christianships/NaVIM`
+2. **Settings → Extensions → Load an unpacked extension**, and pick the
+   `NaVIM` folder (the one with `manifest.json`)
+3. Turn it on and let it access websites
 
-## Layout
+Search **copies** the folder when it loads an extension. After pulling
+changes, use NaVIM's **Reload from its folder** so Search picks them up.
+
+### Chrome, Helium, Arc, Brave
+
+`chrome://extensions` → turn on **Developer mode** → **Load unpacked** → pick
+the folder.
+
+## How it works
 
 ```
-manifest.json
-src/dotmatrix.js   5x7 round-dot glyphs drawn as SVG (the hint look)
-src/overlay.js     closed-shadow-root layer for hints + the HUD badge
-src/hints.js       find visible clickables, label, type-to-click
-src/commands.js    hold-⌥ commands and the "what should scroll" logic
-src/keys.js        right-⌥ tap / hold detection, key routing
-src/background.js  opens new tabs
-preview/labels.html  open in any browser to see the hint design
+manifest.json        MV3; content scripts on every page and frame, at document_start
+src/keys.js          tracks the right ⌥ (tap vs hold), routes keys
+src/hints.js         finds clickable things, makes labels, handles typing
+src/commands.js      the hold-⌥ commands, and works out what should scroll
+src/overlay.js       one click-through layer in a closed shadow root + the HUD badge
+src/font.js          GohuFont 14, cut down and built in as base64
+src/dotmatrix.js     5×7 round-dot glyphs for the HUD badge
+src/background.js    opens new tabs
 ```
 
-## Preview the hint design
+**Spotting the right Option key.** Browsers don't say which Option key is held
+while you press `j`, only that *an* Option key is. But pressing the Option key
+by itself fires its own event with `code: "AltRight"`. NaVIM watches that key
+go down and up, and only reacts to other keys while it's held. It reads the
+physical key (`KeyJ`) instead of the typed character, because ⌥J types `∆`.
+It blocks those keys before the page sees them, so no stray `∆` or accent
+gets typed.
 
-Open `preview/labels.html`, or `preview/labels.html?typed=s` to see the
-mid-typing state (typed letters dim, non-matching labels hide).
+**Choosing what to label.** Links, buttons, inputs, ARIA roles (`button`,
+`link`, `tab`, `menuitem`…), `onclick`/`jsaction` handlers and focusable
+elements. It looks inside open shadow roots, so YouTube-style web components
+get labels too. An element only gets a label if it's on screen and actually
+showing at that spot (checked with `elementFromPoint`), so things hidden
+behind modals and sticky headers are skipped. Nested matches covering the
+same area, like `<a><div role=button>`, share one label.
+
+**Labels.** Labels use home-row letters (`sadfjklewcmpgh`). No label is the
+start of another, so `s` can't be confused with `sa`. With few targets, each
+label is a single letter.
+
+**Clicking.** NaVIM fires the full pointer/mouse sequence (`pointerdown`,
+`mousedown`, `pointerup`, `mouseup`, `click`) at the element's centre, so
+JavaScript-heavy sites react the same way they would to a real click.
+
+**What scrolls.** It scrolls the box you last clicked in. Otherwise it
+scrolls the page, and if the page itself doesn't scroll, the largest
+scrollable box on it, which is how sites like Gmail and Discord are built.
+
+**Unaffected by page styles.** Labels live in a closed shadow root with
+`all: initial`, so page CSS can't restyle them and page scripts can't find
+them. The font is built in, so a site's font restrictions can't block it.
+
+## Design
+
+- **Labels:** white [GohuFont 14](https://font.gohu.org/) on black, 15 px
+  tall, letters you've typed dimmed to gray. GohuFont is a bitmap font, so
+  at its native 14 px every pixel lands on the grid and stays crisp.
+- **HUD badge:** a dot-matrix `NAVIM` in the bottom-right while hints are
+  up, also used for `COPIED`, `NO INPUT` and similar messages.
+- **Icon:** Vim's beveled diamond and serif V, redone in black and chrome
+  with a dot-matrix face. Generated by `tools/make-icon.py`.
+
+## Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| Tapping right ⌥ does nothing | Reload the page: content scripts only load into pages opened after the extension. Browser pages (settings, new tab) never run extensions. |
+| Right ⌥ + a key types `∆` or accents | The browser isn't letting NaVIM block the key. Fallback: remap right ⌥ to F18 with Hammerspoon or Karabiner, only while Search is in front (`com.officecommun.search`). |
+| Labels miss something inside an embedded frame | Hints only cover the frame that has focus. Click into the frame first. |
+| Changes don't show up in Search | Search runs a copy. Use **Reload from its folder**. |
+
+## Development
+
+```sh
+open preview/labels.html            # hint design, idle state
+open "preview/labels.html?typed=s"  # mid-typing state
+tools/make-font.sh                  # rebuild src/font.js from the installed GohuFont
+python3 tools/make-icon.py          # rebuild icons/navim.svg
+```
+
+To re-export the PNG icons, render `icons/navim.svg` at 512 px and scale it
+down to 16/32/48/128.
+
+## Roadmap
+
+- [ ] Tab commands: next/previous, close, new
+- [ ] `?` cheat-sheet overlay
+- [ ] Find on page
+- [ ] Hints across embedded frames
+- [ ] Double-tap right ⌥ for a sticky, Vimium-style mode
+- [ ] Settings: per-site disable, custom key mappings, label alphabet
+
+## Credits
+
+- [Vimium](https://github.com/philc/vimium), for the labelling scheme
+- [GohuFont](https://font.gohu.org/) by Hugo Chargois (WTFPL), here via the
+  [Nerd Fonts](https://www.nerdfonts.com/) build
+- Vim's logo, which the icon riffs on
