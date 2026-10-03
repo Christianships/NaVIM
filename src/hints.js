@@ -82,9 +82,9 @@
       t.label = labels[i];
       t.node = document.createElement('div');
       t.node.className = 'hint';
-      t.node.style.left = `${Math.max(0, Math.min(t.rect.left - 2, innerWidth - 40))}px`;
-      t.node.style.top = `${Math.max(0, Math.min(t.rect.top - 2, innerHeight - 26))}px`;
-      t.node.append(N.dots.svg(t.label));
+      t.node.style.left = `${Math.round(Math.max(0, Math.min(t.rect.left - 2, innerWidth - 30)))}px`;
+      t.node.style.top = `${Math.round(Math.max(0, Math.min(t.rect.top - 2, innerHeight - 18)))}px`;
+      t.node.append(...N.overlay.label(t.label));
       layer.append(t.node);
     });
     state = { targets, typed: '', newTab };
@@ -112,7 +112,7 @@
     }
     for (const t of targets) {
       t.node.hidden = !t.label.startsWith(typed);
-      if (!t.node.hidden) t.node.replaceChildren(N.dots.svg(t.label, { typed: typed.length }));
+      if (!t.node.hidden) t.node.replaceChildren(...N.overlay.label(t.label, typed.length));
     }
   }
 

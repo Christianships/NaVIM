@@ -7,14 +7,18 @@
     .layer { position: fixed; inset: 0; }
     .hint {
       position: absolute;
-      padding: 3px 4px;
-      line-height: 0;
+      padding: 1px 3px 0;
+      font: 14px/14px 'NaVIM Gohu', ui-monospace, Menlo, monospace;
+      letter-spacing: 0;
+      color: #fff;
+      white-space: pre;
       background: rgba(0, 0, 0, 0.92);
-      border-radius: 5px;
+      border-radius: 3px;
       /* white hairline for dark pages, dark ring + shadow for light ones */
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.45);
     }
     .hint[hidden] { display: none; }
+    .hint .typed { color: #5c5c5c; }
     .hud {
       position: fixed;
       right: 14px;
@@ -33,6 +37,14 @@
 
   let host, layer, hud, hudTimer;
 
+  // GohuFont 14 from src/font.js, handed to FontFace as bytes so page CSP
+  // (font-src) can't block it. Shadow trees use document-level fonts.
+  if (N.fontData && !N.fontFace) {
+    const bytes = Uint8Array.from(atob(N.fontData), c => c.charCodeAt(0));
+    N.fontFace = new FontFace('NaVIM Gohu', bytes.buffer);
+    N.fontFace.load().then(f => document.fonts.add(f), () => {});
+  }
+
   function ensure() {
     if (host?.isConnected) return;
     host = document.createElement('navim-overlay');
@@ -48,6 +60,13 @@
     layer() {
       ensure();
       return layer;
+    },
+    // A hint label's contents: the already-typed prefix dimmed, the rest white.
+    label(text, typed = 0) {
+      const done = document.createElement('span');
+      done.className = 'typed';
+      done.textContent = text.slice(0, typed).toUpperCase();
+      return [done, text.slice(typed).toUpperCase()];
     },
     clear() {
       layer?.replaceChildren();
