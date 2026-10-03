@@ -1,39 +1,7 @@
 #!/usr/bin/env python3
 """Write icons/navim.svg: Vim's beveled diamond + extruded V, in black and
-chrome with a dot-matrix face, flanked by two hint tags reading NA . V . IM."""
+chrome with a dot-matrix face."""
 from pathlib import Path
-
-GLYPHS = {
-    'N': ['#...#', '#...#', '##..#', '#.#.#', '#..##', '#...#', '#...#'],
-    'A': ['.###.', '#...#', '#...#', '#####', '#...#', '#...#', '#...#'],
-    'I': ['.###.', '..#..', '..#..', '..#..', '..#..', '..#..', '.###.'],
-    'M': ['#...#', '##.##', '#.#.#', '#.#.#', '#...#', '#...#', '#...#'],
-}
-
-
-def dots(text, x0, y0, pitch, r):
-    """Dot-matrix text as one path, top-left at (x0, y0)."""
-    d = []
-    for i, ch in enumerate(text):
-        for y, row in enumerate(GLYPHS[ch]):
-            for x, c in enumerate(row):
-                if c == '#':
-                    cx = x0 + (i * 6 + x + 0.5) * pitch
-                    cy = y0 + (y + 0.5) * pitch
-                    d.append(f'M{cx - r:.2f} {cy:.2f}a{r} {r} 0 1 0 {2 * r} 0a{r} {r} 0 1 0 {-2 * r} 0')
-    return ''.join(d)
-
-
-def tag(text, x, y, w=104, h=64):
-    pitch, r = 7, 2.7
-    tw, th = (len(text) * 6 - 1) * pitch, 7 * pitch
-    return f'''
-    <g filter="url(#tagShadow)">
-      <rect x="{x}" y="{y}" width="{w}" height="{h}" rx="11" fill="#000"/>
-      <rect x="{x + 1.5}" y="{y + 1.5}" width="{w - 3}" height="{h - 3}" rx="9.5" fill="url(#tagFace)" stroke="#fff" stroke-opacity=".28" stroke-width="1.5"/>
-      <path d="{dots(text, x + (w - tw) / 2, y + (h - th) / 2, pitch, r)}" fill="#fff"/>
-    </g>'''
-
 
 def poly(points):
     return ' '.join(f'{x},{y}' for x, y in points)
@@ -91,16 +59,9 @@ svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="5
       <stop offset="0" stop-color="#fff" stop-opacity=".14"/>
       <stop offset=".5" stop-color="#fff" stop-opacity="0"/>
     </linearGradient>
-    <linearGradient id="tagFace" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#1a1a1d"/>
-      <stop offset="1" stop-color="#000"/>
-    </linearGradient>
 
     <filter id="drop" x="-20%" y="-20%" width="140%" height="140%">
       <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#000" flood-opacity=".55"/>
-    </filter>
-    <filter id="tagShadow" x="-30%" y="-30%" width="160%" height="170%">
-      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#000" flood-opacity=".7"/>
     </filter>
   </defs>
 
@@ -126,9 +87,6 @@ svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="5
     <path d="M98 119H430" stroke="#fff" stroke-width="4"/>
   </g>
 
-  <!-- hint tags: NA . V . IM -->
-  {tag('NA', 90, 334)}
-  {tag('IM', 324, 334)}
 </svg>
 '''
 

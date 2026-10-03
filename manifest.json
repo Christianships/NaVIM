@@ -3,15 +3,32 @@
   "name": "NaVIM",
   "version": "0.1.0",
   "description": "Vim-style browsing on the right Option key: tap for dot-matrix link hints, hold for motions.",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
   "background": {
     "service_worker": "src/background.js",
-    "scripts": ["src/background.js"],
+    "scripts": [
+      "src/background.js"
+    ],
     "persistent": false
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["src/font.js", "src/dotmatrix.js", "src/overlay.js", "src/hints.js", "src/commands.js", "src/keys.js"],
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "src/font.js",
+        "src/dotmatrix.js",
+        "src/overlay.js",
+        "src/hints.js",
+        "src/commands.js",
+        "src/keys.js"
+      ],
       "run_at": "document_start",
       "all_frames": true
     }
