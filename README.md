@@ -2,6 +2,10 @@
   <img src="icons/navim.svg" width="140" alt="NaVIM logo">
 </p>
 
+<p align="center">
+  <a href="https://github.com/Christianships/NaVIM/archive/refs/heads/master.zip"><img src="https://img.shields.io/badge/Download-.zip-000000?style=for-the-badge&logo=github&logoColor=white" alt="Download NaVIM as a .zip"></a>
+</p>
+
 <h1 align="center">NaVIM</h1>
 
 <p align="center">Keyboard browsing on one key: your <b>right Option</b>.</p>
