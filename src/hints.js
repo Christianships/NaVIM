@@ -167,6 +167,8 @@
     key,
     toggle: () => (state ? stop() : start()),
     active: () => !!state,
+    // label -> element for what's on screen now; used by tools/showcase
+    targets: () => (state ? state.targets.map(({ label, el }) => ({ label, el })) : []),
     isEditable,
     visibleRect,
   };

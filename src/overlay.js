@@ -50,9 +50,12 @@
     host = document.createElement('navim-overlay');
     host.style.cssText = 'all: initial !important; display: block !important; position: fixed !important; inset: 0 !important; pointer-events: none !important; z-index: 2147483647 !important;';
     const root = host.attachShadow({ mode: 'closed' });
-    root.innerHTML = `<style>${CSS}</style><div class="layer"></div><div class="hud"></div>`;
-    layer = root.querySelector('.layer');
-    hud = root.querySelector('.hud');
+    // No innerHTML: Trusted Types sites (YouTube, Google) throw on it.
+    const style = document.createElement('style');
+    style.textContent = CSS;
+    layer = Object.assign(document.createElement('div'), { className: 'layer' });
+    hud = Object.assign(document.createElement('div'), { className: 'hud' });
+    root.append(style, layer, hud);
     document.documentElement.append(host);
   }
 
