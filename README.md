@@ -14,10 +14,10 @@
 
 | | |
 |---|---|
-| ![Wikipedia](docs/showcase/wikipedia.png) | ![Hacker News](docs/showcase/hackernews.png) |
-| ![GitHub](docs/showcase/github.png) | ![YouTube](docs/showcase/youtube.png) |
-| ![Reddit](docs/showcase/reddit.png) | ![MDN](docs/showcase/mdn.png) |
-| ![BBC News](docs/showcase/bbc.png) | ![Amazon](docs/showcase/amazon.png) |
+| ![Wikipedia](docs/showcase/wikipedia.jpg) | ![Hacker News](docs/showcase/hackernews.jpg) |
+| ![GitHub](docs/showcase/github.jpg) | ![YouTube](docs/showcase/youtube.jpg) |
+| ![Reddit](docs/showcase/reddit.jpg) | ![MDN](docs/showcase/mdn.jpg) |
+| ![BBC News](docs/showcase/bbc.jpg) | ![Amazon](docs/showcase/amazon.jpg) |
 
 ## Keys
 

@@ -1,0 +1,8 @@
+# The Download .zip only carries what the extension needs to run.
+/docs export-ignore
+/tools export-ignore
+/preview export-ignore
+/README.md export-ignore
+/icons/navim.svg export-ignore
+/.gitignore export-ignore
+/.gitattributes export-ignore
