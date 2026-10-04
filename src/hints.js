@@ -2,7 +2,6 @@
 (() => {
   const N = (globalThis.NaVIM ||= {});
 
-  const ALPHABET = 'sadfjklewcmpgh';
   const SELECTOR = [
     'a[href]', 'button', 'input:not([type=hidden])', 'select', 'textarea', 'summary', 'label[for]',
     '[role=button]', '[role=link]', '[role=tab]', '[role=menuitem]', '[role=menuitemcheckbox]',
@@ -48,17 +47,6 @@
     return null;
   }
 
-  // Prefix-free labels, as short as the target count allows (Vimium's scheme).
-  function makeLabels(count) {
-    const out = [''];
-    let offset = 0;
-    while (out.length - offset < count || out.length === 1) {
-      const base = out[offset++];
-      for (const ch of ALPHABET) out.push(ch + base);
-    }
-    return out.slice(offset, offset + count).sort().map(s => [...s].reverse().join(''));
-  }
-
   const near = (a, b) =>
     Math.abs(a.left - b.left) < 6 && Math.abs(a.top - b.top) < 6 &&
     Math.abs(a.width - b.width) < 6 && Math.abs(a.height - b.height) < 6;
@@ -72,14 +60,16 @@
       if (!rect) continue;
       // <a><div role=button> is one target, not two stacked labels
       if (targets.some(t => (t.el.contains(el) || el.contains(t.el)) && near(t.rect, rect))) continue;
-      targets.push({ el, rect });
+      // where the target sits on screen decides its label (src/keymap.js)
+      const l = Math.max(rect.left, 0), t = Math.max(rect.top, 0);
+      const cx = (l + Math.min(rect.right, innerWidth)) / 2, cy = (t + Math.min(rect.bottom, innerHeight)) / 2;
+      targets.push({ el, rect, cx, cy });
     }
     if (!targets.length) return N.overlay.hud('NO TARGETS', 900);
 
-    const labels = makeLabels(targets.length);
+    N.keymap.label(targets);
     const layer = N.overlay.layer();
-    targets.forEach((t, i) => {
-      t.label = labels[i];
+    targets.forEach(t => {
       t.node = document.createElement('div');
       t.node.className = 'hint';
       t.node.style.left = `${Math.round(Math.max(0, Math.min(t.rect.left - 2, innerWidth - 30)))}px`;
@@ -149,8 +139,8 @@
       update();
       return true;
     }
-    const ch = e.code.startsWith('Key') ? e.code.slice(3).toLowerCase() : '';
-    if (ALPHABET.includes(ch) && ch) {
+    const ch = N.keymap.char(e);
+    if (ch) {
       state.typed += ch;
       state.newTab ||= e.shiftKey;
       update();

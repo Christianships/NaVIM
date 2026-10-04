@@ -25,6 +25,7 @@
         "src/font.js",
         "src/dotmatrix.js",
         "src/overlay.js",
+        "src/keymap.js",
         "src/hints.js",
         "src/commands.js",
         "src/keys.js"

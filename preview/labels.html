@@ -31,13 +31,14 @@
 <script src="../src/font.js"></script>
 <script src="../src/dotmatrix.js"></script>
 <script src="../src/overlay.js"></script>
+<script src="../src/keymap.js"></script>
 <script src="../src/hints.js"></script>
 <script>
   NaVIM.openTab = () => {};
   // headless screenshots resize the window once, which exits hint mode: re-run
   const show = () => {
     NaVIM.hints.start();
-    // ?typed=s shows the mid-typing state: typed letters dim, the rest hide
+    // ?typed=q shows the mid-typing state: typed letters dim, the rest hide
     for (const ch of new URLSearchParams(location.search).get('typed') ?? '')
       NaVIM.hints.key({ code: 'Key' + ch.toUpperCase(), shiftKey: false, metaKey: false, ctrlKey: false });
   };
