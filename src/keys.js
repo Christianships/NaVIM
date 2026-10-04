@@ -38,9 +38,11 @@
     if (swallowed.delete(e.code)) {
       e.preventDefault();
       e.stopImmediatePropagation();
+      N.release?.(e.code);
       return;
     }
     if (e.code !== 'AltRight') return;
+    N.release?.('AltRight');
     const tap = held && !used && performance.now() - downAt < TAP_MS;
     held = false;
     if (tap) N.hints.toggle();
@@ -50,7 +52,10 @@
   addEventListener('beforeinput', e => held && e.preventDefault(), true);
 
   // A missed keyup (switched apps mid-hold) must not leave Option stuck.
-  const reset = () => (held = false);
+  const reset = () => {
+    held = false;
+    N.release?.('AltRight');
+  };
   addEventListener('blur', reset);
   document.addEventListener('visibilitychange', reset);
 })();

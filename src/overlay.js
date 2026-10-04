@@ -19,6 +19,14 @@
     }
     .hint[hidden] { display: none; }
     .hint .typed { color: #5c5c5c; }
+    /* a waypoint you just jumped to: a white frame that fades out */
+    .mark {
+      position: absolute;
+      border-radius: 4px;
+      box-shadow: 0 0 0 2px #fff, 0 0 0 3px #000, 0 0 18px rgba(255, 255, 255, 0.35);
+      animation: navim-fade 1.1s ease-in forwards;
+    }
+    @keyframes navim-fade { 0%, 60% { opacity: 1; } 100% { opacity: 0; } }
     .hud {
       position: fixed;
       right: 14px;
@@ -70,6 +78,15 @@
       done.className = 'typed';
       done.textContent = text.slice(0, typed).toUpperCase();
       return [done, text.slice(typed).toUpperCase()];
+    },
+    // Frame an element briefly (waypoint jumps).
+    mark(el) {
+      ensure();
+      const r = el.getBoundingClientRect();
+      const m = Object.assign(document.createElement('div'), { className: 'mark' });
+      Object.assign(m.style, { left: `${r.left - 6}px`, top: `${r.top - 4}px`, width: `${r.width + 12}px`, height: `${r.height + 8}px` });
+      layer.append(m);
+      m.addEventListener('animationend', () => m.remove());
     },
     clear() {
       layer?.replaceChildren();
