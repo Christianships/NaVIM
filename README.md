@@ -4,6 +4,7 @@
 
 <p align="center">
   <a href="https://github.com/Christianships/NaVIM/archive/refs/heads/master.zip"><img src="https://img.shields.io/badge/Download-.zip-000000?style=for-the-badge&logo=github&logoColor=white" alt="Download NaVIM as a .zip"></a>
+  <a href="https://github.com/Christianships/NaVIM/stargazers"><img src="https://img.shields.io/github/stars/Christianships/NaVIM?style=for-the-badge&logo=github&logoColor=white&color=000000&label=Star" alt="Star NaVIM on GitHub"></a>
 </p>
 
 <h1 align="center">NaVIM</h1>
@@ -52,3 +53,7 @@ Normal typing is never affected.
      the option to load or add an extension from a folder, and pick the
      folder.
 3. Refresh any tabs that were already open.
+
+---
+
+<p align="center">⭐ If NaVIM saves you from reaching for the mouse, <a href="https://github.com/Christianships/NaVIM">star the repo</a> so more people find it.</p>
