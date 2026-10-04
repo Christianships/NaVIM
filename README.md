@@ -8,7 +8,7 @@
 
 <h1 align="center">NaVIM</h1>
 
-<p align="center">Keyboard browsing on one key: your <b>right Option</b>.</p>
+<p align="center">Browse the web using Vim like the unemployed.</p>
 
 ![NaVIM on Hacker News](docs/demo/hackernews.gif)
 
