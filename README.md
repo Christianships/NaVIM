@@ -126,7 +126,7 @@ between. Scrolling, resizing or pressing a ⌘ shortcut also closes the labels.
 
 | Key | Does |
 |---|---|
-| `j` / `k` | **throttle** down / up: starts at reading pace and speeds up the longer you hold, then stops the moment you let go |
+| `j` / `k` | **throttle** down / up: eases in at reading pace, speeds up the longer you hold, and coasts to a stop when you let go |
 | `]` / `[` | **waypoints**: jump to the next / previous heading and frame it |
 | `d` / `u` | half a page down / up |
 | `g` / `G` | top / bottom |
@@ -198,10 +198,15 @@ skipped. Nested matches covering the same area share one label.
 centre, so JavaScript-heavy sites react the same way they would to a real
 click.
 
-**Throttle.** Holding `j` starts a `requestAnimationFrame` loop. Speed starts
-at 650 px/s, climbs 2,400 px/s for every second held, and tops out at
-2,800 px/s. Releasing `j`, `k` or right ⌥, or switching away from the
-window, cuts it.
+**Throttle.** Holding `j` starts a `requestAnimationFrame` loop. The target
+speed starts at 650 px/s, climbs 2,400 px/s for every second held, and tops
+out at 2,800 px/s. The actual speed eases toward that target, so it never
+jumps. Releasing `j`, `k` or right ⌥ lets it coast to a stop in about a
+quarter of a second instead of halting dead. Pressing the other key mid-flight
+turns it around smoothly. The position is tracked as a decimal and rounded
+once per frame, so steps stay even. A site's own `scroll-behavior: smooth`
+is switched off while NaVIM scrolls, so its animations don't stack up and
+stutter.
 
 **Waypoints.** `h1`–`h6` and `[role=heading]` elements, in page order. The
 heading you just landed on is skipped, so pressing `]` repeatedly keeps

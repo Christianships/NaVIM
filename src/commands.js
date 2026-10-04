@@ -36,24 +36,55 @@
   const scroll = (dy, e) => scroller().scrollBy({ top: dy, behavior: e.repeat ? 'auto' : 'smooth' });
 
   // Throttle: holding j/k scrolls continuously and speeds up the longer you
-  // hold, from a reading pace to a sprint. Letting go of either key stops it.
-  let thrust = null;
+  // hold, from a reading pace to a sprint. Speed eases in and, on release,
+  // coasts to a stop, so there's never a jump. Position is tracked as a float
+  // and rounded once per frame, so steps stay even.
+  const BASE = 650, ACCEL = 2.4, MAX = 2800; // px/s, px/s per ms held, px/s
+  const EASE_IN = 0.09, COAST = 0.09; // seconds to close ~63% of the speed gap
+  let flight = null;
+
   function throttle(dir, e) {
-    if (e.repeat || thrust?.dir === dir) return;
-    const el = scroller(), t0 = performance.now();
-    const run = (thrust = { dir });
-    let last = t0;
-    const frame = now => {
-      if (thrust !== run) return;
-      const speed = Math.min(2800, 650 + (now - t0) * 2.4); // px per second
-      el.scrollBy({ top: (dir * speed * (now - last)) / 1000, behavior: 'instant' });
-      last = now;
+    if (e.repeat) return;
+    const el = scroller(), now = performance.now();
+    if (flight?.el === el) {
+      // already moving: steer (j <-> k) or re-open the throttle mid-coast
+      Object.assign(flight, { dir, key: e.code, held: true, t0: now });
+      return;
+    }
+    const f = (flight = { el, dir, key: e.code, held: true, t0: now, last: now, v: 0, pos: el.scrollTop, set: el.scrollTop });
+    // Sites with `scroll-behavior: smooth` would turn every frame's step into
+    // its own animation. Switch it off on the scroller while we fly.
+    const box = el === document.scrollingElement ? document.documentElement : el;
+    const before = box.style.getPropertyValue('scroll-behavior');
+    const priority = box.style.getPropertyPriority('scroll-behavior');
+    box.style.setProperty('scroll-behavior', 'auto', 'important');
+    const land = () => {
+      box.style.setProperty('scroll-behavior', before, priority);
+      if (flight === f) flight = null;
+    };
+
+    const frame = t => {
+      if (flight !== f) return land();
+      const dt = Math.min((t - f.last) / 1000, 1 / 30);
+      f.last = t;
+      // something else scrolled (wheel, page script): fly on from there
+      if (Math.abs(el.scrollTop - f.set) > 2) f.pos = el.scrollTop;
+
+      const target = f.held ? f.dir * Math.min(MAX, BASE + (t - f.t0) * ACCEL) : 0;
+      f.v += (target - f.v) * (1 - Math.exp(-dt / (f.held ? EASE_IN : COAST)));
+      f.pos = Math.max(0, Math.min(el.scrollHeight - el.clientHeight, f.pos + f.v * dt));
+
+      // whole pixels: half-pixel offsets get truncated, which pairs up steps
+      el.scrollTop = f.set = Math.round(f.pos);
+      // under ~0.7px a frame the coast would just flicker between 1 and 0
+      if (!f.held && Math.abs(f.v) < 40) return land();
       requestAnimationFrame(frame);
     };
     requestAnimationFrame(frame);
   }
+
   N.release = code => {
-    if (code === 'KeyJ' || code === 'KeyK' || code === 'AltRight') thrust = null;
+    if (flight && (code === flight.key || code === 'AltRight')) flight.held = false;
   };
 
   // Waypoints: the page's headings, in order. ] and [ jump between them.
