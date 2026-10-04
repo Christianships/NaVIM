@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "NaVIM",
   "version": "0.1.0",
-  "description": "Vim-style browsing on the right Option key: tap for dot-matrix link hints, hold for motions.",
+  "description": "Keyboard browsing on the right Option key: tap to label every link, hold to scroll and navigate.",
   "icons": {
     "16": "icons/icon-16.png",
     "32": "icons/icon-32.png",
