@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Christianships/NaVIM/archive/refs/heads/master.zip"><img src="https://img.shields.io/badge/Download-.zip-000000?style=for-the-badge&logo=github&logoColor=white" alt="Download NaVIM as a .zip"></a>
+  <a href="https://github.com/Christianships/NaVIM/releases/latest/download/na-VIM.zip"><img src="https://img.shields.io/badge/Download-.zip-000000?style=for-the-badge&logo=github&logoColor=white" alt="Download NaVIM as a .zip"></a>
   <a href="https://github.com/Christianships/NaVIM/stargazers"><img src="https://img.shields.io/github/stars/Christianships/NaVIM?style=for-the-badge&logo=github&logoColor=white&color=000000&label=Star" alt="Star NaVIM on GitHub"></a>
 </p>
 
@@ -44,7 +44,7 @@ Normal typing is never affected.
 ## Install
 
 1. Download or clone this repo.
-2. Load the `NaVIM` folder (the one with `manifest.json`) as an unpacked
+2. Unzip it and load the `na-VIM` folder (the one with `manifest.json`) as an unpacked
    extension:
    - **Chrome-based browsers** (Chrome, Edge, Brave, Arc, Helium): go to
      `chrome://extensions`, turn on **Developer mode**, click **Load
