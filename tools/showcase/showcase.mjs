@@ -21,7 +21,7 @@ export const SITES = {
   youtube: 'https://www.youtube.com/results?search_query=vim+tutorial',
   reddit: 'https://www.reddit.com/r/vim/',
   mdn: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
-  stackoverflow: 'https://stackoverflow.com/questions/11828270/how-do-i-exit-vim',
+  bbc: 'https://www.bbc.com/news',
   amazon: 'https://www.amazon.com/',
 };
 
@@ -87,6 +87,16 @@ export async function holdRightOption(page, key, times = 1, gap = 120) {
   await page.keyboard.up('AltRight');
 }
 
+// Hold right ⌥ and keep `key` down for `ms` (throttle scrolling).
+export async function throttle(page, key, ms) {
+  await page.keyboard.down('AltRight');
+  await sleep(120);
+  await page.keyboard.down(key);
+  await sleep(ms);
+  await page.keyboard.up(key);
+  await page.keyboard.up('AltRight');
+}
+
 // The label NaVIM gave the first on-screen target matching `pick`.
 export async function labelFor(page, pick) {
   return page.evaluate(src => {
@@ -102,7 +112,10 @@ async function stills(names) {
     const page = await open(browser, SITES[name]);
     await tapRightOption(page);
     await sleep(400);
-    const count = await page.evaluate(() => globalThis.NaVIM.hints.targets().length);
+    const count = await page.evaluate(() => {
+      const ls = globalThis.NaVIM.hints.targets().map(t => t.label.length);
+      return `${ls.length} (1 key: ${ls.filter(n => n === 1).length}, 2: ${ls.filter(n => n === 2).length}, 3+: ${ls.filter(n => n > 2).length})`;
+    });
     const file = join(ROOT, 'docs', 'showcase', `${name}.png`);
     await page.screenshot({ path: file });
     console.log(`${name}: ${count} targets, title "${await page.title()}" -> ${file}`);
@@ -136,8 +149,8 @@ const SCENES = {
     await typeLabel(page, el => /comments?$/.test(el.textContent.trim()) && el.href?.includes('item?id'));
     await page.waitForNavigation({ timeout: 15000 }).catch(() => {});
     await sleep(900);
-    await caption(page, 'hold right ⌥ + j');
-    await holdRightOption(page, 'j', 12, 110);
+    await caption(page, 'hold right ⌥ + j   (throttle: keeps speeding up)');
+    await throttle(page, 'j', 1700);
     await sleep(500);
     await caption(page, 'hold right ⌥ + h   (back)');
     await sleep(400);
@@ -174,17 +187,26 @@ const SCENES = {
     await sleep(900);
   },
   async wikipedia(page) {
-    await caption(page, 'hold right ⌥ + j');
-    await holdRightOption(page, 'j', 9, 110);
-    await sleep(600);
+    await caption(page, 'hold right ⌥ + ]   (next heading)');
+    await sleep(500);
+    for (let i = 0; i < 3; i++) {
+      await holdRightOption(page, ']');
+      await sleep(1100);
+    }
+    await caption(page, 'hold right ⌥ + [   (previous heading)');
+    await holdRightOption(page, '[');
+    await sleep(1300);
     await showHints(page);
     await typeLabel(page, el => el.textContent.trim() === 'Bram Moolenaar');
     await page.waitForNavigation({ timeout: 15000 }).catch(() => {});
     await sleep(1600);
   },
-  async stackoverflow(page) {
+  async mdn(page) {
+    await caption(page, 'hold right ⌥ + j   (throttle)');
+    await throttle(page, 'j', 1200);
+    await sleep(400);
     await caption(page, 'hold right ⌥ + d   (half page down)');
-    await holdRightOption(page, 'd', 3, 650);
+    await holdRightOption(page, 'd', 2, 650);
     await sleep(500);
     await caption(page, 'hold right ⌥ + g   (top)');
     await holdRightOption(page, 'g');
