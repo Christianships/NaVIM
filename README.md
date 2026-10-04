@@ -26,20 +26,57 @@ from closing a tab. NaVIM uses no modes. Every command runs through the
 
 ## Demo
 
-<!-- A screen recording of NaVIM in Search goes here: docs/demo.gif -->
+NaVIM on sites you use every day. The caption in the bottom-left corner
+shows which keys are being pressed.
 
-**Lock-on hints.** Tap right ⌥ and every clickable thing in view gets a
-label:
+**Hacker News:** tap right ⌥, type a label to open the comments, hold ⌥ + `j`
+to read, ⌥ + `h` to go back.
 
-![Hint labels on a light page and a dark page](docs/hints.png)
+![NaVIM on Hacker News](docs/demo/hackernews.gif)
+
+**GitHub:** label → Issues tab, ⌥ + `d` half-page scrolls, ⌥ + `g` back to
+the top. GitHub's web components get labels too.
+
+![NaVIM on GitHub](docs/demo/github.gif)
+
+**YouTube:** ⌥ + `i` jumps into the search box, then you just type, with no
+insert mode. Tap ⌥ for labels on the results, `Esc` to cancel.
+
+![NaVIM on YouTube](docs/demo/youtube.gif)
+
+**Wikipedia:** scroll with ⌥ + `j`, tap ⌥, type the label for *Bram
+Moolenaar*.
+
+![NaVIM on Wikipedia](docs/demo/wikipedia.gif)
+
+**Stack Overflow:** ⌥ + `d` to read, ⌥ + `g` to the top, tap ⌥ twice to show
+and dismiss labels.
+
+![NaVIM on Stack Overflow](docs/demo/stackoverflow.gif)
+
+### Lock-on hints on popular sites
+
+| | |
+|---|---|
+| ![Wikipedia](docs/showcase/wikipedia.png) | ![Hacker News](docs/showcase/hackernews.png) |
+| **Wikipedia** | **Hacker News** |
+| ![GitHub](docs/showcase/github.png) | ![YouTube](docs/showcase/youtube.png) |
+| **GitHub** | **YouTube** |
+| ![Reddit](docs/showcase/reddit.png) | ![MDN](docs/showcase/mdn.png) |
+| **Reddit** | **MDN** |
+| ![Stack Overflow](docs/showcase/stackoverflow.png) | ![Amazon](docs/showcase/amazon.png) |
+| **Stack Overflow** | **Amazon** |
 
 Start typing a label, and the letters you've typed dim while labels that no
-longer match disappear. Finish the label and NaVIM clicks it:
+longer match disappear:
 
 ![Mid-typing: after pressing S only the S-labels remain, with the S dimmed](docs/hints-typing.png)
 
-*These images are rendered from [`preview/labels.html`](preview/labels.html),
-which runs the extension's real hint code on a sample page.*
+<sub>How these were made: [`tools/showcase`](tools/showcase/showcase.mjs)
+loads each site in a headless Chromium browser (Helium), injects NaVIM's
+content scripts unchanged, and presses real keys: right-⌥ taps and holds
+reach `src/keys.js` just as a person's keypresses would. The sites are live
+and logged out, so you'll see cookie banners and sign-in prompts.</sub>
 
 ## Keys
 
@@ -158,6 +195,9 @@ them. The font is built in, so a site's font restrictions can't block it.
 ```sh
 open preview/labels.html            # hint design, idle state
 open "preview/labels.html?typed=s"  # mid-typing state
+cd tools/showcase && bun install
+bun showcase.mjs stills             # hint screenshots of popular sites -> docs/showcase/
+bun showcase.mjs demo               # scripted recordings -> tools/showcase/out/*.webm
 tools/make-font.sh                  # rebuild src/font.js from the installed GohuFont
 python3 tools/make-icon.py          # rebuild icons/navim.svg
 ```
