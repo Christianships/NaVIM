@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "NaVIM",
-  "version": "0.2.0",
-  "description": "Keyboard browsing on the right Option key: tap to label every link, hold to scroll and navigate. Tap right Command in a text box to edit with vim keys.",
+  "version": "0.1.0",
+  "description": "Keyboard browsing on the right Option key: tap to label every link, hold to scroll and navigate.",
   "icons": {
     "16": "icons/icon-16.png",
     "32": "icons/icon-32.png",
@@ -28,7 +28,6 @@
         "src/keymap.js",
         "src/hints.js",
         "src/commands.js",
-        "src/edit.js",
         "src/keys.js"
       ],
       "run_at": "document_start",

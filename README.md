@@ -39,22 +39,7 @@ Add **Shift** to open it in a new tab, or press **Esc** to cancel.
 | `i` | jump into the first text box |
 | `y` | copy the page URL |
 
-### Editing text boxes
-
-While typing in a text box, **tap right ⌘** to switch to normal mode. Your
-thumb stays on ⌘ and the keys under your right hand edit:
-
-```
- y  u  i  o  p      line start · word ← · back to typing · word → · line end
-  h  j  k  l  ;     ← ↓ ↑ → · undo  (Shift+' redoes)
-   n  m  ,  .  /    del word ← · del char ← · del char → · del word → · clear line
-```
-
-Hold **Shift** with a move to select; a delete then removes the selection.
-Tap right ⌘ again, press `i` or **Esc** to go back to typing. Leaving the box
-also ends normal mode, and ⌘ shortcuts keep working throughout.
-
-Normal typing is never affected until you tap right ⌘.
+Normal typing is never affected.
 
 ## Install
 
